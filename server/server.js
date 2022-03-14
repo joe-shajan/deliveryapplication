@@ -4,6 +4,8 @@ import connectDB from "./config/db.js";
 
 import productRoutes from './routes/productsRoutes.js'
 import storeRoutes from './routes/storesRoutes.js'
+import userRouter from './routes/userRoutes.js'
+import cartRouter from './routes/cartRoutes.js'
 
 connectDB()
 const app = express()
@@ -15,6 +17,8 @@ app.use(express.urlencoded({ limit: "25mb", extended: true }))
 
 app.use('/product',productRoutes)
 app.use('/store',storeRoutes)
+app.use('/user',userRouter)
+app.use('/cart',cartRouter)
 
 app.get('/',(req,res)=>{
     res.status(200).json({project:'Connection Successfull'})

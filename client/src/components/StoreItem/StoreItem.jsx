@@ -1,12 +1,28 @@
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import axios from "axios";
 import React from "react";
-import GroupedButtons from "../../components/ButtonGroup/ButtonGroup";
+import { useParams } from "react-router-dom";
+// import GroupedButtons from "../../components/ButtonGroup/ButtonGroup";
 
 const StoreItem = ({ props }) => {
-  console.log(props);
+  const { storeid } = useParams();
+  const AddItem = async (productid) => {
+    const userid = localStorage.getItem("userid");
+    if (userid) {
+      try {
+        console.log('in try');
+        const { data } = axios.get(`/cart/add-item/${userid}/${storeid}/${productid}`);
+        console.log(data);
+      } catch (error) {
+        console.log(error.response);
+      }
+    }else{
+      alert('no user found')
+    }
+  };
   return (
-    <Grid container sx={{ ":hover": { boxShadow: 5 } }} >
+    <Grid container sx={{ ":hover": { boxShadow: 5 } }}>
       <Grid item xs={3} sm={2.5} md={2.5}>
         <Box
           sx={{
@@ -66,7 +82,20 @@ const StoreItem = ({ props }) => {
             justifyContent: "center",
           }}
         >
-          <GroupedButtons />
+          {/* <GroupedButtons /> */}
+          <Button
+            size="small"
+            variant="contained"
+            sx={{
+              backgroundColor: "#00D290",
+              height: 30,
+              borderRadius: 5,
+              m: 1,
+            }}
+            onClick={() => AddItem(props._id)}
+          >
+            ADD
+          </Button>
         </Box>
       </Grid>
     </Grid>

@@ -11,7 +11,7 @@ const storeSignup = (req, res, next) => {
     newStore.save((err, newStore) => {
         if (err) {
             res.status(409).json(err)
-        } else {
+        } else { 
             req.storeId = newStore._id
             console.log(req.storeId)
             next()
@@ -33,7 +33,6 @@ const storeLogin = async (req, res) => {
             res.status(404).json({ message: 'user not found' })
         }
         if (data) {
-            console.log(data.password,req.body);
             if (data.password == req.body.Password) {
                 res.status(200).json(data)
             } else {

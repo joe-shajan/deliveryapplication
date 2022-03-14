@@ -5,7 +5,6 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
-import xpresslogo from "../../Images/xpress.jpg";
 import { Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 export default function Store({prop}) {
@@ -13,7 +12,7 @@ export default function Store({prop}) {
     <Grid container spacing={3} sx={{mt:1,p:{md:5}}}>
         {prop.map((store,index)=>(
             <Grid item xs={12} md={6} key={index}>
-              <Link to={`/store/${store._id}`}>
+              <Link to={`/store/${store._id}`} style={{textDecoration: "none"}}>
             <Card sx={{ display: "flex", boxShadow: 0, padding:1,borderRadius: 4, ":hover":{ boxShadow: 5} }}>
               <CardMedia
                 component="img"

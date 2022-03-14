@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import OwnerTable from "../../../components/OwnerTable/OwnerTable";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -20,13 +20,11 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import validationSchema from "../../../validations/addProductValidation";
 import getBase64 from "../../../Helpers/convertIntoB64";
-import { createProduct } from "../../../actions/productAction";
 import { Toast } from "../../../Helpers/alerts";
 
 const ImgBoxStyle = {
@@ -66,7 +64,6 @@ const NewObjectWithBase64Image = async (data, storeid) => {
 };
 
 const Products = () => {
-  const dispatch = useDispatch();
 
   const [backdropOpen, setBackdropOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
@@ -87,30 +84,9 @@ const Products = () => {
     resolver: yupResolver(validationSchema),
   });
 
-  // const addProduct = useSelector((state) => state.createProduct);
-  // const { loading, error, product } = addProduct;
-  // if (product) {
-  //   // reset({
-  //   //   productname: "",
-  //   //   unit: "",
-  //   //   qty: "",
-  //   //   amount: "",
-  //   //   exprmonths: "",
-  //   //   category: "",
-  //   //   units: "",
-  //   //   description: "",
-  //   // });
-  //   // setImageUrl1(null);
-  //   // setImageUrl2(null);
-  //   // setImageUrl3(null);
-  //   setOpen(false);
-  //   Toast.fire({
-  //     icon: "success",
-  //     title: "Product added succesfully",
-  //   });
-  // }
-
+ 
   let { storeid } = useParams();
+
   const onSubmit = async (data) => {
     setBackdropOpen(true);
     let newData = await NewObjectWithBase64Image(data, storeid);
@@ -190,7 +166,7 @@ const Products = () => {
             Add new item
           </Button>
         </Box>
-        <OwnerTable />
+        <OwnerTable props={{storeid}}/>
       </Box>
 
       <Dialog

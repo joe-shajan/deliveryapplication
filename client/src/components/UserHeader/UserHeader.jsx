@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -15,6 +15,9 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import logo from "../../Images/logo.png";
 import "./UserHeader.css";
+import { Button } from "@mui/material";
+import UserSignup from "../UserSignup/UserSignup";
+import UserSignin from "../userSignin/UserSignin";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -58,10 +61,13 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [login, setLogin] = useState(false);
+  const [flag, setFlag] = useState(true);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const [signupOpen, signupSetOpen] = useState(false);
+  const [signinOpen, signinSetOpen] = useState(false);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -78,6 +84,12 @@ export default function PrimarySearchAppBar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const logout = () => {
+    localStorage.removeItem("userid");
+    setAnchorEl(null);
+    setLogin(false)
   };
 
   const menuId = "primary-search-account-menu";
@@ -99,6 +111,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={logout}>Logout</MenuItem>
     </Menu>
   );
 
@@ -139,73 +152,8 @@ export default function PrimarySearchAppBar() {
       </MenuItem>
 
       <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
-
-  return (
-    <Box
-      sx={{ flexGrow: 1 }}
-      style={{
-        position: "sticky",
-        top: 0,
-        bottom: 0,
-        zIndex: 5,
-      }}
-    >
-      <AppBar
-        position="static"
-        color="default"
-        sx={{ px: { md: 10, lg: 25 }, boxShadow: 0 }}
-      >
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          ></IconButton>
-          <img src={logo} alt="" className="logos" />
-
-          <Search>
-            <SearchIconWrapper>
-              <LocationOnOutlinedIcon className="green" />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Enter your location"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <SearchOutlinedIcon />
-            </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <ShoppingCartOutlinedIcon />
-              </Badge>
-            </IconButton>
-
+        {login ? (
+          <>
             <IconButton
               size="large"
               edge="end"
@@ -217,23 +165,133 @@ export default function PrimarySearchAppBar() {
             >
               <AccountCircle />
             </IconButton>
-          </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            <p>Profile</p>
+          </>
+        ) : (
+          <Button
+            size="small"
+            variant="contained"
+            sx={{
+              backgroundColor: "#00D290",
+              height: 30,
+              borderRadius: 5,
+              m: 1,
+            }}
+          >
+            Sign in
+          </Button>
+        )}
+      </MenuItem>
+    </Menu>
+  );
+
+  useEffect(() => {
+    const uid = localStorage.getItem("userid");
+    if (uid) {
+      setLogin(true);
+    }
+  }, [flag]);
+
+  return (
+    <>
+      <Box
+        sx={{ flexGrow: 1 }}
+        style={{
+          position: "sticky",
+          top: 0,
+          bottom: 0,
+          zIndex: 5,
+        }}
+      >
+        <AppBar
+          position="static"
+          color="default"
+          sx={{ px: { md: 10, lg: 25 }, boxShadow: 0 }}
+        >
+          <Toolbar>
             <IconButton
               size="large"
-              aria-label="show more"
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
+              edge="start"
               color="inherit"
-            >
-              <MoreIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-      </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </Box>
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
+            ></IconButton>
+            <img src={logo} alt="" className="logos" />
+
+            <Search>
+              <SearchIconWrapper>
+                <LocationOnOutlinedIcon className="green" />
+              </SearchIconWrapper>
+              <StyledInputBase
+                placeholder="Enter your location"
+                inputProps={{ "aria-label": "search" }}
+              />
+            </Search>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <IconButton
+                size="large"
+                aria-label="show 17 new notifications"
+                color="inherit"
+              >
+                <SearchOutlinedIcon />
+              </IconButton>
+              <IconButton
+                size="large"
+                aria-label="show 4 new mails"
+                color="inherit"
+              >
+                <Badge badgeContent={4} color="error">
+                  <ShoppingCartOutlinedIcon />
+                </Badge>
+              </IconButton>
+              {login ? (
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+              ) : (
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#00D290",
+                    height: 30,
+                    borderRadius: 5,
+                    m: 1,
+                  }}
+                  onClick={() => signinSetOpen(true)}
+                >
+                  Sign in
+                </Button>
+              )}
+            </Box>
+            <Box sx={{ display: { xs: "flex", md: "none" } }}>
+              <IconButton
+                size="large"
+                aria-label="show more"
+                aria-controls={mobileMenuId}
+                aria-haspopup="true"
+                onClick={handleMobileMenuOpen}
+                color="inherit"
+              >
+                <MoreIcon />
+              </IconButton>
+            </Box>
+          </Toolbar>
+        </AppBar>
+        {renderMobileMenu}
+        {renderMenu}
+      </Box>
+      <UserSignup props={{ signupOpen, signupSetOpen ,signinSetOpen,flag,setFlag}} />
+      <UserSignin props={{ signinOpen, signinSetOpen,signupSetOpen,flag,setFlag }} />
+    </>
   );
 }

@@ -19,7 +19,7 @@ const columns = [
   {id: "units",label: "Stock left",minWidth: 100,align: "center"},
 ];
 
-const OwnerTable = () => {
+const OwnerTable = ({props}) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [storeItems, setStoreItems] = useState([]);
@@ -35,13 +35,13 @@ const OwnerTable = () => {
   useEffect(() => {
     try {
       (async () => {
-        let { data } = await axios.get("/product/products");
-        setStoreItems(data);
+        let { data } = await axios.get(`/product/products/${props.storeid}`);
+        setStoreItems(data.products);
       })();
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [props.storeid]);
 
   return (
     <Paper sx={{ width: { md: "80%", xs: "100%" }, overflow: "hidden" }}>

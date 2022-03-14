@@ -16,20 +16,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import validationSchema from "../../validations/storeOwnerLoginValidation";
 import { useNavigate } from "react-router-dom";
-import { Toast } from "../../Helpers/alerts";
 
 const StoreOwnerLoginForm = ({ props }) => {
 //   const MySwal = withReactContent(Swal);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const newData = {
-    email: "joe@gmail.com",
-    password: "12345",
-  };
+ 
 
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
   } = useForm({

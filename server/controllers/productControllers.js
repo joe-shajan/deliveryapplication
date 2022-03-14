@@ -25,7 +25,7 @@ const getAllProducts = async (req, res, next) => {
         const store = await Store.findOne({_id:req.params.storeid})
         res.status(200).json({products,store})
     } catch (error) {
-        res.status(404).json(err)
+        res.status(404).json(error)
     }
 
 }
