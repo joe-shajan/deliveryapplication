@@ -30,21 +30,20 @@ const getAllProducts = async (req, res, next) => {
 
 }
 
-export {
-    addProduct,
-    getAllProducts
+const getProduct = async(req,res)=>{
+    const {storeid,productid} = req.params;
+    try {
+        const product = await Products.findOne({_id:productid,storeid:storeid})
+        const store = await Store.findOne({_id:req.params.storeid})
+        res.status(200).json({product,store})
+    } catch (error) {
+        res.status(404).json(error)
+    }
 }
 
-// const getAllProducts = async (req, res, next) => {
-//     try {
-//         await Products.aggregate([
-//             {
-//                 $group: '$salary'
-//             }
-//         ])
+export {
+    addProduct,
+    getAllProducts,
+    getProduct
+}
 
-//     } catch (error) {
-//         res.status(404).json(err)
-//     }
-
-// }

@@ -5,7 +5,6 @@ import cloudinary from '../utils/cloudinary.js'
 
 
 const uploadProductImage = async (req, res) => {
-console.log("in upload");
     let { image1, image2, image3 } = req.body
     const uploadResponse1 = await cloudinary.uploader.upload(image1);
     const uploadResponse2 = await cloudinary.uploader.upload(image2);

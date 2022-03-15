@@ -2,7 +2,8 @@ import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import axios from "axios";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import ButtonGroupLarge from "../ButtonGroup/ButtonGroupLarge";
 // import GroupedButtons from "../../components/ButtonGroup/ButtonGroup";
 
 const StoreItem = ({ props }) => {
@@ -11,14 +12,16 @@ const StoreItem = ({ props }) => {
     const userid = localStorage.getItem("userid");
     if (userid) {
       try {
-        console.log('in try');
-        const { data } = axios.get(`/cart/add-item/${userid}/${storeid}/${productid}`);
+        console.log("in try");
+        const { data } = axios.get(
+          `/cart/add-item/${userid}/${storeid}/${productid}`
+        );
         console.log(data);
       } catch (error) {
         console.log(error.response);
       }
-    }else{
-      alert('no user found')
+    } else {
+      alert("no user found");
     }
   };
   return (
@@ -46,14 +49,23 @@ const StoreItem = ({ props }) => {
             justifyContent: "center",
           }}
         >
-          <Typography
-            variant="body1"
-            component="h2"
-            fontWeight="600"
-            sx={{ m: { md: 0.5 } }}
+          <Link
+            to={`/store/${storeid}/product/${props._id}`}
+            style={{ textDecoration: "none" }}
           >
-            {props.productname}
-          </Typography>
+            <Typography
+              variant="body1"
+              component="h2"
+              fontWeight="600"
+              sx={{
+                m: { md: 0.5 },
+                color: "black",
+                "&:hover": { color: "#00D290" },
+              }}
+            >
+              {props.productname}
+            </Typography>
+          </Link>
           <Typography
             variant="body2"
             component="h2"
@@ -66,6 +78,7 @@ const StoreItem = ({ props }) => {
             variant="body1"
             component="h2"
             fontWeight="700"
+            color={"black"}
             sx={{ m: { md: 0.5 } }}
           >
             ₹ {props.amount}
@@ -82,8 +95,9 @@ const StoreItem = ({ props }) => {
             justifyContent: "center",
           }}
         >
+          <ButtonGroupLarge />
           {/* <GroupedButtons /> */}
-          <Button
+          {/* <Button
             size="small"
             variant="contained"
             sx={{
@@ -95,7 +109,7 @@ const StoreItem = ({ props }) => {
             onClick={() => AddItem(props._id)}
           >
             ADD
-          </Button>
+          </Button> */}
         </Box>
       </Grid>
     </Grid>

@@ -64,7 +64,6 @@ const NewObjectWithBase64Image = async (data, storeid) => {
 };
 
 const Products = () => {
-
   const [backdropOpen, setBackdropOpen] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [selectedImage1, setSelectedImage1] = useState(null);
@@ -84,7 +83,6 @@ const Products = () => {
     resolver: yupResolver(validationSchema),
   });
 
- 
   let { storeid } = useParams();
 
   const onSubmit = async (data) => {
@@ -166,7 +164,7 @@ const Products = () => {
             Add new item
           </Button>
         </Box>
-        <OwnerTable props={{storeid}}/>
+        <OwnerTable props={{ storeid }} />
       </Box>
 
       <Dialog
