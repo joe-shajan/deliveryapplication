@@ -36,7 +36,7 @@ const OwnerTable = ({props}) => {
     try {
       (async () => {
         let { data } = await axios.get(`/product/products/${props.storeid}`);
-        setStoreItems(data.products);
+        setStoreItems(data);
       })();
     } catch (error) {
       console.log(error);

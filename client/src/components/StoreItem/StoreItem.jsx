@@ -5,25 +5,26 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import ButtonGroupLarge from "../ButtonGroup/ButtonGroupLarge";
 // import GroupedButtons from "../../components/ButtonGroup/ButtonGroup";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../actions/cartActions";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const StoreItem = ({ props }) => {
+  const dispatch = useDispatch();
+
   const { storeid } = useParams();
+
+  const { loading, success, error } = useSelector((state) => state.cart);
+
   const AddItem = async (productid) => {
     const userid = localStorage.getItem("userid");
     if (userid) {
-      try {
-        console.log("in try");
-        const { data } = axios.get(
-          `/cart/add-item/${userid}/${storeid}/${productid}`
-        );
-        console.log(data);
-      } catch (error) {
-        console.log(error.response);
-      }
+      dispatch(addToCart(userid, storeid, productid));
     } else {
       alert("no user found");
     }
   };
+  
   return (
     <Grid container sx={{ ":hover": { boxShadow: 5 } }}>
       <Grid item xs={3} sm={2.5} md={2.5}>
@@ -95,21 +96,36 @@ const StoreItem = ({ props }) => {
             justifyContent: "center",
           }}
         >
-          <ButtonGroupLarge />
+          {/* <ButtonGroupLarge /> */}
           {/* <GroupedButtons /> */}
-          {/* <Button
-            size="small"
-            variant="contained"
-            sx={{
-              backgroundColor: "#00D290",
-              height: 30,
-              borderRadius: 5,
-              m: 1,
-            }}
-            onClick={() => AddItem(props._id)}
-          >
-            ADD
-          </Button> */}
+          {/* {loading ? ( */}
+            {/* <LoadingButton
+              loading={false}
+              variant="contained"
+              sx={{
+                backgroundColor: "#00D290",
+                height: 30,
+                borderRadius: 5,
+                m: 1,
+              }}
+            >
+              ADD
+            </LoadingButton> */}
+          {/* // ) : ( */}
+            <Button
+              size="small"
+              variant="contained"
+              sx={{
+                backgroundColor: "#00D290",
+                height: 30,
+                borderRadius: 5,
+                m: 1,
+              }}
+              onClick={() => AddItem(props._id)}
+            >
+              ADD
+            </Button>
+          {/* )} */}
         </Box>
       </Grid>
     </Grid>

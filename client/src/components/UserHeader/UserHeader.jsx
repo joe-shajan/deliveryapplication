@@ -18,6 +18,8 @@ import "./UserHeader.css";
 import { Button } from "@mui/material";
 import UserSignup from "../UserSignup/UserSignup";
 import UserSignin from "../userSignin/UserSignin";
+import {Link} from 'react-router-dom'
+import { useSelector } from "react-redux";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -69,6 +71,8 @@ export default function UserHeader() {
   const [signupOpen, signupSetOpen] = useState(false);
   const [signinOpen, signinSetOpen] = useState(false);
 
+  const { cartitems } = useSelector((state) => state.cart);
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -89,7 +93,7 @@ export default function UserHeader() {
   const logout = () => {
     localStorage.removeItem("userid");
     setAnchorEl(null);
-    setLogin(false)
+    setLogin(false);
   };
 
   const menuId = "primary-search-account-menu";
@@ -236,15 +240,18 @@ export default function UserHeader() {
               >
                 <SearchOutlinedIcon />
               </IconButton>
-              <IconButton
-                size="large"
-                aria-label="show 4 new mails"
-                color="inherit"
-              >
-                <Badge badgeContent={4} color="error">
-                  <ShoppingCartOutlinedIcon />
-                </Badge>
-              </IconButton>
+              <Link to="/cart">
+                <IconButton
+                  size="large"
+                  aria-label="show 4 new mails"
+                  color="inherit"
+                  
+                >
+                  <Badge badgeContent={cartitems.length} color="error">
+                    <ShoppingCartOutlinedIcon sx={{color:'black'}}/>
+                  </Badge>
+                </IconButton>
+              </Link>
               {login ? (
                 <IconButton
                   size="large"
@@ -290,8 +297,12 @@ export default function UserHeader() {
         {renderMobileMenu}
         {renderMenu}
       </Box>
-      <UserSignup props={{ signupOpen, signupSetOpen ,signinSetOpen,flag,setFlag}} />
-      <UserSignin props={{ signinOpen, signinSetOpen,signupSetOpen,flag,setFlag }} />
+      <UserSignup
+        props={{ signupOpen, signupSetOpen, signinSetOpen, flag, setFlag }}
+      />
+      <UserSignin
+        props={{ signinOpen, signinSetOpen, signupSetOpen, flag, setFlag }}
+      />
     </>
   );
 }

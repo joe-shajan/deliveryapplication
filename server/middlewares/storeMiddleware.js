@@ -10,7 +10,7 @@ const uploadLogo=async (req,res)=>{
     doc.logo = url
   
     await doc.save()
-    res.status(200).json({ msg: 'product added successfully',id:req.storeId });
+    res.status(200).json({ msg: 'store added successfully',id:req.storeId });
 }
 
 export{

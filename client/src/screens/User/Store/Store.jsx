@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import UserHeader from "../../../components/UserHeader/UserHeader";
 import StoreSubHeader from "../../../components/StoreSubHeader/StoreSubHeader";
 import StoreSearchBar from "../../../components/StoreSearchBar/StoreSearchBar";
@@ -8,29 +8,45 @@ import StoreItem from "../../../components/StoreItem/StoreItem";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import CartItem from "../../../components/CartItem/CartItem";
+import { useDispatch, useSelector } from "react-redux";
+import { listProducts } from "../../../actions/productAction";
 
 const Store = () => {
-  const [storeItems, setStoreItems] = useState([]);
-  const [store, setStore] = useState({});
+  const dispatch = useDispatch();
   const { storeid } = useParams();
+  const [skip, setSkip] = useState(0);
+  const [store, setStore] = useState({});
+  const [search,setSearch] = useState("")
 
- 
+  const { cartitems } = useSelector((state) => state.cart);
+  
+
+  let total = 0;
+  for (let item of cartitems) {
+    total += item.producttotal;
+  }
+  const {loading , products} = useSelector((state)=>state.listproduct)
+
+  const handleScroll = (e) => {
+    const { offsetHeight, scrollTop, scrollHeight } = e.target;
+    // console.log(offsetHeight + scrollTop, scrollHeight);
+    if (offsetHeight + scrollTop >= scrollHeight) {
+      setSkip(products.length)
+    }
+  };
+
 
   useEffect(() => {
-    try {
-      (async () => {
-        let { data } = await axios.get(`/product/products/${storeid}`);
-        setStoreItems(data.products);
-        setStore(data.store);
-      })();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [storeid]);
+    (async () => {
+      const { data } = await axios.get(`/store/${storeid}`);
+      setStore(data)
+    })();
+    dispatch(listProducts(storeid, skip));
+  }, [dispatch, storeid,skip]);
   return (
     <>
       <UserHeader />
-      <StoreSubHeader props={store} />
+      <StoreSubHeader props={store}/>
       <StoreSearchBar />
       <Container>
         <Grid container spacing={1}>
@@ -67,8 +83,21 @@ const Store = () => {
             </Box>
           </Grid>
           <Grid item xs={12} md={7}>
-            <Box sx={{ width: "100%", border: 1, borderColor: "#e0e0e0" }}>
-              {storeItems.map((data) => (
+            <Box
+              sx={{
+                width: "100%",
+                height: "62vh",
+                position: { md: "sticky", xs: "" },
+                top: 281,
+                bottom: "0px",
+                zIndex: 5,
+                overflow: "auto",
+                border: 1,
+                borderColor: "#e0e0e0",
+              }}
+              onScroll={handleScroll}
+            >
+              {products.map((data) => (
                 <StoreItem props={data} />
               ))}
             </Box>
@@ -83,34 +112,43 @@ const Store = () => {
               }}
             >
               <Typography variant="h5">Your Cart</Typography>
-              <Typography variant="subtitle1">1 item</Typography>
+              <Typography variant="subtitle1">
+                {cartitems.length} item
+              </Typography>
               <Box
                 sx={{
                   width: "100%",
-                  height: "45vh",
+                  height: "43vh",
                   overflow: "auto",
                 }}
               >
-                {[1, 1, 1, 1].map(() => (
-                  <CartItem/>
-                ))}
+                {/* cart item */}
+                {/* cart item */}
+                <CartItem />
+                {/* cart item */}
+                {/* cart item */}
               </Box>
-              <Button
-                size="small"
-                variant="contained"
-                sx={{
-                  backgroundColor: "#00D290",
-                  height: 40,
-                  width: "100%",
-                  borderRadius: 5,
-                  display: "flex",
-                  justifyContent: "space-around",
-                }}
-                // onClick={() => signinSetOpen(true)}
-              >
-                <span style={{fontWeight: "bold"}}>Checkout</span>
-                <span style={{fontWeight: "bold",fontSize:15}}>₹ 200</span>
-              </Button>
+              {cartitems.length > 0 && (
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#00D290",
+                    height: 40,
+                    width: "100%",
+                    borderRadius: 5,
+                    display: "flex",
+                    mt: 1,
+                    justifyContent: "space-around",
+                  }}
+                  // onClick={() => signinSetOpen(true)}
+                >
+                  <span style={{ fontWeight: "bold" }}>Checkout</span>
+                  <span style={{ fontWeight: "bold", fontSize: 15 }}>
+                    ₹ {total}
+                  </span>
+                </Button>
+              )}
             </Box>
           </Grid>
         </Grid>

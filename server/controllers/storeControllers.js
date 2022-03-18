@@ -21,8 +21,14 @@ const storeSignup = (req, res, next) => {
 
 
 const getAllStores = async (req, res) => {
+    console.log('in get all stor');
     const data = await Store.find();
     res.status(200).json(data)
+}
+
+const getStore = async (req, res) => {
+    const store = await Store.findOne({_id:req.params.storeid})
+    res.status(200).json(store)
 }
 
 
@@ -49,6 +55,7 @@ const storeLogin = async (req, res) => {
 export {
     getAllStores,
     storeSignup,
-    storeLogin
+    storeLogin,
+    getStore
 }
 

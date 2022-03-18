@@ -7,11 +7,13 @@ const cartSchema = new mongoose.Schema({
     cartitems:[
         {
             productid:{type: mongoose.Schema.Types.ObjectId, required: true},
+            productname:{ type: String, required: true },
             qty:{ type: Number, required: true },
+            unit:{ type: String, required: true },
+            noofitems:{ type: Number, required: true },
             producttotal:{ type: Number, required: true },
         }
-    ],
-    carttotalamount:{ type: Number, required: true },
+    ]
 
 })
 

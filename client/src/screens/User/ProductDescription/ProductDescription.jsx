@@ -97,9 +97,8 @@ const ProductDescription = () => {
                   overflow: "auto",
                 }}
               >
-                {[1, 1, 1, 1, 1, 1, 1, 1].map(() => (
                   <CartItem />
-                ))}
+                
               </Box>
               <Button
                 size="small"
