@@ -3,7 +3,6 @@ import React from "react";
 import AccessTimeFilledOutlinedIcon from "@mui/icons-material/AccessTimeFilledOutlined";
 
 const StoreSubHeader = ({props}) => {
-  console.log(props);
   return (
     <Box
       sx={{

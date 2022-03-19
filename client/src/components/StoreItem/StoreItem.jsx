@@ -1,13 +1,9 @@
 import { Button, Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import axios from "axios";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
-import ButtonGroupLarge from "../ButtonGroup/ButtonGroupLarge";
-// import GroupedButtons from "../../components/ButtonGroup/ButtonGroup";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../../actions/cartActions";
-import LoadingButton from "@mui/lab/LoadingButton";
 
 const StoreItem = ({ props }) => {
   const dispatch = useDispatch();

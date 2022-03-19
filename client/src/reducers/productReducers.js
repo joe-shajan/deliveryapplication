@@ -19,6 +19,7 @@ export const productListReducer = (state = { products: [] }, action) => {
     }
 }
 
+
 export const productCreateReducer = (state = {}, action) => {
     switch (action.type) {
       case PRODUCT_CREATE_REQUEST:

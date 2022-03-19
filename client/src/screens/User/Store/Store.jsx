@@ -1,53 +1,113 @@
 import React, { Fragment, useEffect, useState } from "react";
 import UserHeader from "../../../components/UserHeader/UserHeader";
 import StoreSubHeader from "../../../components/StoreSubHeader/StoreSubHeader";
-import StoreSearchBar from "../../../components/StoreSearchBar/StoreSearchBar";
-import { Container, Grid, Typography, IconButton, Button } from "@mui/material";
+import {
+  Container,
+  Grid,
+  Typography,
+  Button,
+  FormControl,
+  OutlinedInput,
+  InputAdornment,
+} from "@mui/material";
 import { Box } from "@mui/system";
 import StoreItem from "../../../components/StoreItem/StoreItem";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import CartItem from "../../../components/CartItem/CartItem";
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts } from "../../../actions/productAction";
+import { listProducts, searchProducts } from "../../../actions/productAction";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import StoreitemSkeleton from "../../../components/StoreitemSkeleton/StoreitemSkeleton";
 
 const Store = () => {
   const dispatch = useDispatch();
   const { storeid } = useParams();
   const [skip, setSkip] = useState(0);
   const [store, setStore] = useState({});
-  const [search,setSearch] = useState("")
 
   const { cartitems } = useSelector((state) => state.cart);
-  
 
   let total = 0;
   for (let item of cartitems) {
     total += item.producttotal;
   }
-  const {loading , products} = useSelector((state)=>state.listproduct)
+  const { loading, products } = useSelector((state) => state.listproduct);
 
   const handleScroll = (e) => {
     const { offsetHeight, scrollTop, scrollHeight } = e.target;
-    // console.log(offsetHeight + scrollTop, scrollHeight);
-    if (offsetHeight + scrollTop >= scrollHeight) {
-      setSkip(products.length)
+    if (offsetHeight + scrollTop >= scrollHeight) setSkip(products.length);
+  };
+
+  const getSuggestions = async (search) => {
+    if (search === "") {
+      dispatch(listProducts(storeid, skip));
+    } else {
+      dispatch(searchProducts(storeid, search));
     }
   };
 
+  const debounce = function (fn, d) {
+    let timer;
+    return function (e) {
+      // setLoading(true);
+      let context = this,
+        args = [e.target.value];
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        fn.apply(context, args);
+      }, d);
+    };
+  };
+
+  const debounceForData = debounce(getSuggestions, 300);
 
   useEffect(() => {
     (async () => {
       const { data } = await axios.get(`/store/${storeid}`);
-      setStore(data)
+      setStore(data);
     })();
     dispatch(listProducts(storeid, skip));
-  }, [dispatch, storeid,skip]);
+  }, [dispatch, storeid, skip]);
   return (
     <>
       <UserHeader />
-      <StoreSubHeader props={store}/>
-      <StoreSearchBar />
+      <StoreSubHeader props={store} />
+      {/* <StoreSearchBar /> */}
+      <Box
+        sx={{
+          width: { md: "99.8%", sx: "90%" },
+          height: 65,
+          border: 1,
+          borderColor: "#e0e0e0",
+          background: "#fff",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          position: { md: "sticky", xs: "sticky" },
+          top: { md: 214, xs: 50 },
+          bottom: 0,
+          zIndex: 5,
+        }}
+      >
+        <FormControl
+          sx={{ m: 0, width: { md: "65ch", xs: "45ch" } }}
+          variant="outlined"
+          size="small"
+          onChange={debounceForData}
+        >
+          <OutlinedInput
+            // value={values.weight}
+            // onChange={handleChange('weight')}
+            startAdornment={
+              <InputAdornment position="start">
+                <SearchOutlinedIcon />
+              </InputAdornment>
+            }
+            placeholder="Search products"
+          />
+        </FormControl>
+      </Box>
       <Container>
         <Grid container spacing={1}>
           <Grid item xs={2} sx={{ display: { md: "block", xs: "none" } }}>
@@ -97,6 +157,11 @@ const Store = () => {
               }}
               onScroll={handleScroll}
             >
+              {loading && <StoreitemSkeleton />}
+
+              {!loading && products.length === 0 && (
+                <Typography variant="h6">No items found</Typography>
+              )}
               {products.map((data) => (
                 <StoreItem props={data} />
               ))}

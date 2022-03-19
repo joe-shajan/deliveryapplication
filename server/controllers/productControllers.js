@@ -29,6 +29,16 @@ const getAllProducts = async (req, res) => {
     }
 
 }
+const searchProducts = async (req, res) => {
+    const {storeid,search} = req.params
+    try {
+        const products = await Products.find({storeid:storeid,productname:{$regex:search}})
+        res.status(200).json(products)
+    } catch (error) {
+        res.status(404).json(error)
+    }
+
+}
 const getAllProductswithoutSkip = async (req, res) => {
     const {storeid} = req.params
     console.log(storeid);
@@ -57,6 +67,7 @@ export {
     addProduct,
     getAllProducts,
     getProduct,
-    getAllProductswithoutSkip
+    getAllProductswithoutSkip,
+    searchProducts
 }
 

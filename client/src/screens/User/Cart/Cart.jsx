@@ -7,10 +7,10 @@ import { useSelector } from "react-redux";
 
 const Cart = () => {
   const { cartitems } = useSelector((state) => state.cart);
- 
-  let total = 0
-  for(let item of cartitems){
-    total += item.producttotal
+
+  let total = 0;
+  for (let item of cartitems) {
+    total += item.producttotal;
   }
   return (
     <>
@@ -34,12 +34,14 @@ const Cart = () => {
                   boxShadow: 4,
                   borderRadius: 3,
                 }}
-                >
+              >
                 {/* address */}
                 <Box sx={{ m: 3 }}>
-                  <Box sx={{display:"flex",justifyContent: "space-between"}}>
-                  <Typography variant="h6">Delivery address</Typography>
-                  <Button>Add new address</Button>
+                  <Box
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <Typography variant="h6">Delivery address</Typography>
+                    <Button>Add new address</Button>
                   </Box>
                   <Box
                     sx={{
@@ -59,8 +61,10 @@ const Cart = () => {
                         borderRadius: 2,
                       }}
                     >
-                      <Typography variant="h6" sx={{p:2}}>Home</Typography>
-                      <Typography variant="body2" sx={{px:2}}>
+                      <Typography variant="h6" sx={{ p: 2 }}>
+                        Home
+                      </Typography>
+                      <Typography variant="body2" sx={{ px: 2 }}>
                         S 1, esther shelters, -, 3 rd floor, Raika Rd,
                         Narayanapura, Bengaluru, Karnataka 560077, India joe
                         shajan - 9074955635
@@ -75,8 +79,10 @@ const Cart = () => {
                         borderRadius: 2,
                       }}
                     >
-                      <Typography variant="h6" sx={{p:2}}>Home</Typography>
-                      <Typography variant="body2" sx={{px:2}}>
+                      <Typography variant="h6" sx={{ p: 2 }}>
+                        Home
+                      </Typography>
+                      <Typography variant="body2" sx={{ px: 2 }}>
                         S 1, esther shelters, -, 3 rd floor, Raika Rd,
                         Narayanapura, Bengaluru, Karnataka 560077, India joe
                         shajan - 9074955635
@@ -100,7 +106,9 @@ const Cart = () => {
           <Grid item xs={12} md={4}>
             <Box sx={{ boxShadow: 4, p: 2, borderRadius: 3 }}>
               <Typography variant="h5">Your Cart</Typography>
-              <Typography variant="subtitle1">{cartitems.length} item</Typography>
+              <Typography variant="subtitle1">
+                {cartitems.length} item
+              </Typography>
               <Box
                 sx={{
                   width: "100%",
@@ -108,9 +116,7 @@ const Cart = () => {
                   overflow: "auto",
                 }}
               >
-               
-                  <CartItem />
-               
+                <CartItem />
               </Box>
               <Box
                 sx={{
@@ -168,7 +174,7 @@ const Cart = () => {
                     </Grid>
                     <Grid item>
                       <Typography gutterBottom variant="h6" component="div">
-                        ₹ 320
+                        ₹ {total + 120}
                       </Typography>
                     </Grid>
                   </Grid>

@@ -1,4 +1,4 @@
-import { CART_ADD_FAIL, CART_ADD_ITEM, CART_ADD_ITEM_REQUEST, CART_CLEAR_ITEMS, CART_REMOVE_ITEM, GET_ALL_CART_ITEMS } from "../constants/cartConstants"
+import { CART_ADD_FAIL, CART_ADD_ITEM, CART_ADD_ITEM_REQUEST, CART_CLEAR_ITEMS, CART_DECREMENT_ITEM, CART_INCREMENT_ITEM, CART_REMOVE_ITEM, GET_ALL_CART_ITEMS } from "../constants/cartConstants"
 
 
 export const cartReducer = (state = { cartitems: [] }, action) => {
@@ -22,7 +22,17 @@ export const cartReducer = (state = { cartitems: [] }, action) => {
         case CART_REMOVE_ITEM:
             return {
                 loading: false,
-                error: action.payload,
+                cartitems: action.payload,
+            }
+        case CART_INCREMENT_ITEM:
+            return {
+                loading: false,
+                cartitems: action.payload,
+            }
+        case CART_DECREMENT_ITEM:
+            return {
+                loading: false,
+                cartitems: action.payload,
             }
         case CART_ADD_FAIL:
             return {

@@ -1,21 +1,31 @@
-import { Box, Grid, IconButton, Typography } from "@mui/material";
-import React, { memo, useEffect, useState } from "react";
+import { Box, Grid, Typography } from "@mui/material";
+import React, { memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllCartItems } from "../../actions/cartActions";
+import { decrementItemInCart, getAllCartItems, incrementItemInCart, removeFromCart } from "../../actions/cartActions";
 import CartIncrementDecrementSmall from "../CartIncrementDecrementSmall/CartIncrementDecrementSmall";
-// import AddIcon from "@mui/icons-material/Add";
-// import RemoveIcon from "@mui/icons-material/Remove";
 
 const CartItem = () => {
   const dispatch = useDispatch();
 
+  const userid = localStorage.getItem("userid");
   const { cartitems } = useSelector((state) => state.cart);
+
+  const deleteCartItem = (productid) => {
+    dispatch(removeFromCart(userid, productid));
+  };
+
+  const incrementCartItem = (productid) => {
+    dispatch(incrementItemInCart(userid,productid))
+  };
+  const decrementCartItem = (productid) => {
+    dispatch(decrementItemInCart(userid,productid))
+  };
+
   useEffect(() => {
-    const userid = localStorage.getItem("userid");
     if (userid) {
       dispatch(getAllCartItems(userid));
     }
-  }, [dispatch]);
+  }, [dispatch, userid]);
 
   return (
     <>
@@ -39,18 +49,24 @@ const CartItem = () => {
             </Grid>
             <Grid
               item
-              md={4}
+              md={3}
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
               }}
             >
-              <CartIncrementDecrementSmall noofitems={product.noofitems} />
+              <CartIncrementDecrementSmall
+                noofitems={product.noofitems}
+                deleteCartItem={deleteCartItem}
+                productid={product.productid}
+                incrementCartItem={incrementCartItem}
+                decrementCartItem={decrementCartItem}
+              />
             </Grid>
             <Grid
               item
-              md={2}
+              md={3}
               sx={{
                 display: "flex",
                 justifyContent: "center",
