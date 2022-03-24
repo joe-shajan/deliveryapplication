@@ -67,6 +67,8 @@ const incrementItemInCart = async (req, res) => {
     await CartModel.updateOne({ userid, "cartitems.productid": productid }, { $inc: { "cartitems.$.noofitems": 1, "cartitems.$.producttotal": amount } })
     res.status(200).json({productid})
 }
+
+
 const decrementItemInCart = async (req, res) => {
     const { userid, productid } = req.params
     console.log(userid, productid);
