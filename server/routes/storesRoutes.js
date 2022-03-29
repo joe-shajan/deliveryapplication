@@ -1,7 +1,7 @@
 import express from 'express'
+const router = express.Router()
 import { getAllStores, getStore, storeLogin, storeSignup } from '../controllers/storeControllers.js'
 import { uploadLogo } from '../middlewares/storeMiddleware.js'
-const router = express.Router()
 
 router.route('/').post(storeSignup, uploadLogo)
 router.route('/stores').get(getAllStores)

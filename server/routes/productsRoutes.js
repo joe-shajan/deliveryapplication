@@ -1,7 +1,7 @@
 import express from 'express'
+const router = express.Router()
 import { addProduct, deleteProduct, editProduct, getAllProducts, getAllProductswithoutSkip, getProduct, searchProducts } from '../controllers/productControllers.js';
 import { edituploadProductImage, uploadProductImage } from '../middlewares/productMiddlewares.js';
-const router = express.Router()
 
  
 router.route('/').post(addProduct,uploadProductImage)

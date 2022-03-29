@@ -6,7 +6,7 @@ const addToCart = async (req, res) => {
     const { userid, storeid, productid } = req.params
     const { productname, qty, unit, amount } = await Products.findOne({ _id: productid })
     const userCart = await CartModel.findOne({ userid: userid })
-    // console.log(userCart);
+    
     if (userCart) {
         if (userCart.storeid == storeid) {
             let item = await CartModel.findOne({ storeid: userCart.storeid, cartitems: { $elemMatch: { productid: productid } } })
@@ -52,20 +52,18 @@ const getAllCartItems = async (req, res) => {
 const deleteItemFromCart = async (req, res) => {
     const { userid, productid } = req.params
     try {
-
         await CartModel.updateOne({ userid }, { $pull: { cartitems: { productid } } })
         res.status(200).json({ message: 'Item removed from cart' })
     } catch (error) {
         res.status(404).json({ message: error.message })
     }
-
 }
 
 const incrementItemInCart = async (req, res) => {
     const { userid, productid } = req.params
     const { amount } = await Products.findById(productid)
     await CartModel.updateOne({ userid, "cartitems.productid": productid }, { $inc: { "cartitems.$.noofitems": 1, "cartitems.$.producttotal": amount } })
-    res.status(200).json({productid})
+    res.status(200).json({ productid })
 }
 
 
@@ -74,8 +72,10 @@ const decrementItemInCart = async (req, res) => {
     console.log(userid, productid);
     const { amount } = await Products.findById(productid)
     await CartModel.updateOne({ userid, "cartitems.productid": productid }, { $inc: { "cartitems.$.noofitems": -1, "cartitems.$.producttotal": -amount } })
-    res.status(200).json({productid})
+    res.status(200).json({ productid })
 }
+
+
 
 export {
     addToCart,
@@ -84,4 +84,6 @@ export {
     incrementItemInCart,
     decrementItemInCart
 }
+
+
 
