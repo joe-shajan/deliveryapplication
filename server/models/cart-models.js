@@ -12,6 +12,7 @@ const cartSchema = new mongoose.Schema({
             unit:{ type: String, required: true },
             noofitems:{ type: Number, required: true },
             producttotal:{ type: Number, required: true },
+            image:{type:String,required:true}
         }
     ]
 

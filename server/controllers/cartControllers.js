@@ -4,16 +4,16 @@ import Products from "../models/product-models.js";
 
 const addToCart = async (req, res) => {
     const { userid, storeid, productid } = req.params
-    const { productname, qty, unit, amount } = await Products.findOne({ _id: productid })
+    const { productname, qty, unit, amount, image1 } = await Products.findOne({ _id: productid })
     const userCart = await CartModel.findOne({ userid: userid })
-    
+
     if (userCart) {
         if (userCart.storeid == storeid) {
             let item = await CartModel.findOne({ storeid: userCart.storeid, cartitems: { $elemMatch: { productid: productid } } })
             if (item) {
                 res.status(409).json({ message: "item already exists" })
             } else {
-                userCart.cartitems.push({ productid, productname, qty, unit, noofitems: 1, producttotal: amount })
+                userCart.cartitems.push({ productid, productname, qty, unit, noofitems: 1, producttotal: amount, image: image1 })
                 const cart = await userCart.save()
                 res.status(200).json(cart)
             }
@@ -25,7 +25,7 @@ const addToCart = async (req, res) => {
             userid,
             storeid,
             cartitems: [{
-                productid, productname, qty, unit, noofitems: 1, producttotal: amount
+                productid, productname, qty, unit, noofitems: 1, producttotal: amount, image: image1
             }]
         })
         const cartitem = await newCartItem.save()

@@ -1,5 +1,7 @@
 import express from "express";
 import dotenv from "dotenv"
+import morgan from "morgan";
+
 import connectDB from "./config/db.js";
 
 import productRoutes from './routes/productsRoutes.js'
@@ -11,6 +13,7 @@ import errorControllers from "./controllers/errorControllers.js";
 
 connectDB()
 const app = express()
+app.use(morgan('tiny'))
 dotenv.config()
 
 app.use(express.json({ limit: '25mb' }))
