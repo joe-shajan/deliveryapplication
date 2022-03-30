@@ -170,6 +170,36 @@ const searchProductsFromAllStores = async(req,res,next)=>{
         next(error)
     }
 }
+const getAllProductsByStores = async(req,res,next)=>{
+    try {
+        const allProducts = await Products.aggregate([
+            {
+                $group:
+                {
+                    _id: "$storeid",
+                    products: { $push: "$$ROOT" }
+                }
+            },
+            {
+                $lookup:
+                {
+                    from: "stores",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "store"
+
+                }
+            }
+        ])
+        const allProductsWithoutStoreArray = allProducts.map((data) => {
+            data.store = data.store[0]
+            return data
+        })
+        res.status(200).json(allProductsWithoutStoreArray)
+    } catch (error) {
+        next(error)
+    }
+}
 
 export {
     addProduct,
@@ -180,6 +210,7 @@ export {
     deleteProduct,
     editProduct,
     getProductByCategory,
-    searchProductsFromAllStores
+    searchProductsFromAllStores,
+    getAllProductsByStores
 }
 

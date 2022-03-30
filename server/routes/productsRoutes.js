@@ -1,15 +1,16 @@
 import express from 'express'
 const router = express.Router()
-import { addProduct, deleteProduct, editProduct, getAllProducts, getAllProductswithoutSkip, getProduct, getProductByCategory, searchProducts, searchProductsFromAllStores } from '../controllers/productControllers.js';
+import { addProduct, deleteProduct, editProduct, getAllProducts, getAllProductsByStores, getAllProductswithoutSkip, getProduct, getProductByCategory, searchProducts, searchProductsFromAllStores } from '../controllers/productControllers.js';
 import { edituploadProductImage, uploadProductImage } from '../middlewares/productMiddlewares.js';
 
 
 router.route('/').post(addProduct, uploadProductImage)
 
-
 router.route('/:storeid/:productid').delete(deleteProduct)
 
 router.route('/:storeid/:productid').put(editProduct, edituploadProductImage)
+
+router.route('/products').get(getAllProductsByStores)
 
 router.route('/products/:storeid/:skip').get(getAllProducts)
 
