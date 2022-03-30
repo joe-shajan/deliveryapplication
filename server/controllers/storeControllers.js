@@ -3,15 +3,23 @@ import Store from "../models/store-model.js";
 
 
 const storeSignup = (req, res, next) => {
-    let { firstname, lastname, storename, city, address, email, phoneno, password } = req.body
+    let { firstname, lastname, storename, city, address, latitude, longitude, email, phoneno, password } = req.body
 
-    let newStore = new Store({ firstname, lastname, storename, city, address, email, phoneno, password })
+    let newStore = new Store({
+        firstname, lastname, storename, city,
+        location: {
+            address,
+            latitude,
+            longitude
+        }
+        , email, phoneno, password
+    })
 
 
     newStore.save((err, newStore) => {
         if (err) {
             res.status(409).json(err)
-        } else { 
+        } else {
             req.storeId = newStore._id
             console.log(req.storeId)
             next()
@@ -27,14 +35,14 @@ const getAllStores = async (req, res) => {
 }
 
 const getStore = async (req, res) => {
-    const store = await Store.findOne({_id:req.params.storeid})
+    const store = await Store.findOne({ _id: req.params.storeid })
     res.status(200).json(store)
 }
 
 
 const storeLogin = async (req, res) => {
 
-    Store.findOne({ $or: [{ email: req.body.EmailOrPhone }, { phoneno: req.body.EmailOrPhone}] }, (err, data) => {
+    Store.findOne({ $or: [{ email: req.body.EmailOrPhone }, { phoneno: req.body.EmailOrPhone }] }, (err, data) => {
         if (err) {
             res.status(404).json({ message: 'user not found' })
         }
