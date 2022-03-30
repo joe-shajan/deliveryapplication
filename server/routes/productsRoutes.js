@@ -1,6 +1,6 @@
 import express from 'express'
 const router = express.Router()
-import { addProduct, deleteProduct, editProduct, getAllProducts, getAllProductswithoutSkip, getProduct, getProductByCategory, searchProducts } from '../controllers/productControllers.js';
+import { addProduct, deleteProduct, editProduct, getAllProducts, getAllProductswithoutSkip, getProduct, getProductByCategory, searchProducts, searchProductsFromAllStores } from '../controllers/productControllers.js';
 import { edituploadProductImage, uploadProductImage } from '../middlewares/productMiddlewares.js';
 
 
@@ -17,9 +17,11 @@ router.route('/search-products/:storeid/:search').get(searchProducts)
 
 router.route('/products/:storeid').get(getAllProductswithoutSkip)
 
+router.route('/search/:search').get(searchProductsFromAllStores)
+
 router.route('/:storeid/:productid').get(getProduct)
 
 router.route('/:category').get(getProductByCategory)
 
 
-export default router;
+export default router; 

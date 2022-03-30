@@ -103,7 +103,6 @@ const editProduct = async (req, res, next) => {
 
 const getProductByCategory = async (req, res, next) => {
     const { category } = req.params
-    console.log(category);
     try {
         const productsByCategoryWithStores = await Products.aggregate([
             {
@@ -135,7 +134,41 @@ const getProductByCategory = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
+}
 
+const searchProductsFromAllStores = async(req,res,next)=>{
+    const {search} = req.params
+    try {
+        const allProducts = await Products.aggregate([
+            {
+                $match: { productname: { $regex: search } }
+            },
+            {
+                $group:
+                {
+                    _id: "$storeid",
+                    products: { $push: "$$ROOT" }
+                }
+            },
+            {
+                $lookup:
+                {
+                    from: "stores",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "store"
+
+                }
+            }
+        ])
+        const allProductsWithoutStoreArray = allProducts.map((data) => {
+            data.store = data.store[0]
+            return data
+        })
+        res.status(200).json(allProductsWithoutStoreArray)
+    } catch (error) {
+        next(error)
+    }
 }
 
 export {
@@ -146,6 +179,7 @@ export {
     searchProducts,
     deleteProduct,
     editProduct,
-    getProductByCategory
+    getProductByCategory,
+    searchProductsFromAllStores
 }
 
