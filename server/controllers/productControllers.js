@@ -2,8 +2,6 @@ import Products from "../models/product-models.js"
 import Store from "../models/store-model.js"
 
 
-
-
 const addProduct = async (req, res, next) => {
     let { storeid, productname, unit, qty, amount, exprmonths, category, units, description } = req.body
     let newProduct = new Products({ storeid, productname, unit, qty, amount, exprmonths, category, units, description })
@@ -85,22 +83,59 @@ const editProduct = async (req, res, next) => {
     const { productname, unit, qty, amount, exprmonths, category, units, description, image1, image2, image3 } = req.body;
     try {
         let { modifiedCount } = await Products.updateOne({ _id: productid, storeid }, { $set: { productname, unit, qty, amount, exprmonths, category, units, description } })
-        if (modifiedCount) {
-            if (image1 || image2 || image3) {
-                next()
-            } else {
-                res.status(200).json({ message: 'product edited successfully' })
-            }
+        if (image1 || image2 || image3) {
+            next()
         } else {
-            if (image1 || image2 || image3) {
-                next()
-            } else {
-                res.status(404).json({ message: 'product not edited' })
-            }
+            if (modifiedCount) res.status(200).json({ message: 'product edited successfully' })
+            else res.status(404).json({ message: 'product not edited' })
         }
     } catch (error) {
         res.status(404).json({ message: error.message })
     }
+}
+
+// object that contains store information and products as array of objects
+
+// ? STEP 1 :  match all producs with category
+// ? STEP 2 :  group all products by store id
+// ? STEP 3 :  push products to a field
+// ? STEP 4 :  look up store
+
+const getProductByCategory = async (req, res, next) => {
+    const { category } = req.params
+    console.log(category);
+    try {
+        const productsByCategoryWithStores = await Products.aggregate([
+            {
+                $match: { category }
+            },
+            {
+                $group:
+                {
+                    _id: "$storeid",
+                    products: { $push: "$$ROOT" }
+                }
+            },
+            {
+                $lookup:
+                {
+                    from: "stores",
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "store"
+
+                }
+            }
+        ])
+        const newproductsByCategoryWithStores = productsByCategoryWithStores.map((data) => {
+            data.store = data.store[0]
+            return data
+        })
+        res.status(200).json(newproductsByCategoryWithStores)
+    } catch (error) {
+        next(error)
+    }
+
 }
 
 export {
@@ -110,6 +145,7 @@ export {
     getAllProductswithoutSkip,
     searchProducts,
     deleteProduct,
-    editProduct
+    editProduct,
+    getProductByCategory
 }
 

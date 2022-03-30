@@ -1,14 +1,15 @@
 import express from 'express'
 const router = express.Router()
-import { addProduct, deleteProduct, editProduct, getAllProducts, getAllProductswithoutSkip, getProduct, searchProducts } from '../controllers/productControllers.js';
+import { addProduct, deleteProduct, editProduct, getAllProducts, getAllProductswithoutSkip, getProduct, getProductByCategory, searchProducts } from '../controllers/productControllers.js';
 import { edituploadProductImage, uploadProductImage } from '../middlewares/productMiddlewares.js';
 
- 
-router.route('/').post(addProduct,uploadProductImage)
+
+router.route('/').post(addProduct, uploadProductImage)
+
 
 router.route('/:storeid/:productid').delete(deleteProduct)
 
-router.route('/:storeid/:productid').put(editProduct,edituploadProductImage)
+router.route('/:storeid/:productid').put(editProduct, edituploadProductImage)
 
 router.route('/products/:storeid/:skip').get(getAllProducts)
 
@@ -18,8 +19,7 @@ router.route('/products/:storeid').get(getAllProductswithoutSkip)
 
 router.route('/:storeid/:productid').get(getProduct)
 
-
-
+router.route('/:category').get(getProductByCategory)
 
 
 export default router;
