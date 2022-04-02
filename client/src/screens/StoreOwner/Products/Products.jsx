@@ -40,32 +40,10 @@ const ImgBoxStyle = {
   borderRadius: 2,
 };
 
-const NewObjectWithBase64Image = async (data, storeid) => {
-  let newData = {
-    storeid: storeid,
-    productname: data.productname,
-    unit: data.unit,
-    qty: data.qty,
-    amount: data.amount,
-    exprmonths: data.exprmonths,
-    category: data.category,
-    units: data.units,
-    description: data.description,
-  };
-
-  let image1 = await getBase64(data.image1);
-  if (image1) newData.image1 = image1;
-  let image2 = await getBase64(data.image2);
-  if (image2) newData.image2 = image2;
-  let image3 = await getBase64(data.image3);
-  if (image3) newData.image3 = image3;
-
-  return newData;
-};
 
 const Products = () => {
-  const [backdropOpen, setBackdropOpen] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [backdropOpen, setBackdropOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [selectedImage1, setSelectedImage1] = useState(null);
   const [imageUrl1, setImageUrl1] = useState(null);
   const [selectedImage2, setSelectedImage2] = useState(null);
@@ -85,12 +63,21 @@ const Products = () => {
 
   let { storeid } = useParams();
 
+  // ? on submit function calls if validation is proper
+
   const onSubmit = async (data) => {
     setBackdropOpen(true);
-    let newData = await NewObjectWithBase64Image(data, storeid);
-    // dispatch(createProduct(newData));
+
+    // ? all image files are passed into function 
+    // ? and retured base64 string is stored in the data object
+    
+    data.storeid = storeid;
+    data.image1 = await getBase64(data.image1);
+    data.image2 = await getBase64(data.image2);
+    data.image3 = await getBase64(data.image3);
+
     try {
-      let response = await axios.post("/product", newData);
+      let response = await axios.post("/product", data);
       if (response) {
         reset({
           productname: "",
@@ -129,6 +116,9 @@ const Products = () => {
   };
 
   useEffect(() => {
+
+    // ? selectd image is stored in state for previewing
+
     if (selectedImage1) {
       setImageUrl1(URL.createObjectURL(selectedImage1));
     }

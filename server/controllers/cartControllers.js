@@ -75,14 +75,25 @@ const decrementItemInCart = async (req, res) => {
     res.status(200).json({ productid })
 }
 
-
+const clearCart = async (req, res, next) => {
+    const { userid } = req.params
+    console.log(userid);
+    try {
+        const { deletedCount } = await CartModel.deleteOne({ userid })
+        if (!deletedCount) res.status(202).json({ message: "cart already cleared" })
+        else res.status(202).json({ message: "cart cleared successfully" })
+    } catch (error) {
+        next(error)
+    }
+}
 
 export {
     addToCart,
     getAllCartItems,
     deleteItemFromCart,
     incrementItemInCart,
-    decrementItemInCart
+    decrementItemInCart,
+    clearCart
 }
 
 
