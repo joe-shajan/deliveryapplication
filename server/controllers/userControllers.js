@@ -16,14 +16,14 @@ const signup = (req, res) => {
 }
 const signin = (req, res) => {
     const { email, password } = req.body
-    Usermodel.findOne({email:email,password:password},(err, data) => {
+    Usermodel.findOne({ email: email, password: password }, (err, data) => {
         if (err) {
             console.log(err);
             res.status(409).json({ message: 'some thing went wrong' })
-        } 
-        if(data){
+        }
+        if (data) {
             res.status(200).json(data)
-        }else{
+        } else {
             res.status(401).json({ message: 'Incorrect Email or Password' })
 
         }
@@ -31,6 +31,18 @@ const signin = (req, res) => {
     })
 }
 
+const getUserDetails = async (req, res) => {
+    const { userid } = req.params
+    try {
+        const userDetails = await Usermodel.findById(userid)
+        res.status(200).json(userDetails)
+    } catch (error) {
+        next(error)
+    }
+}
+
 export {
-    signup, signin
+    signup,
+    signin,
+    getUserDetails
 }
