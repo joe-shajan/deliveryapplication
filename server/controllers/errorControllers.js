@@ -27,6 +27,7 @@ export default (err, req, res, next) => {
         console.log('congrats you hit the error middleware');
         if (err.name === 'ValidationError') return err = handleValidationError(err, res);
         if (err.code && err.code == 11000) return err = handleDuplicateKeyError(err, res);
+        res.status(500).json({message:'An unknown error occurred.'});
     } catch (err) {
         res.status(500).json({message:'An unknown error occurred.'});
     }

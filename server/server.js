@@ -9,6 +9,7 @@ import storeRoutes from './routes/storesRoutes.js'
 import userRouter from './routes/userRoutes.js'
 import cartRouter from './routes/cartRoutes.js'
 import categoryRouter from './routes/categoryRoutes.js'
+import orderRouter from './routes/orderRoutes.js'
 import errorControllers from "./controllers/errorControllers.js";
 
 connectDB()
@@ -28,7 +29,7 @@ app.use('/store', storeRoutes)
 app.use('/user', userRouter)
 app.use('/cart', cartRouter)
 app.use('/category', categoryRouter)
-
+app.use('/order',orderRouter)
 
 
 app.use(errorControllers)
