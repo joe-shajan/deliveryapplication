@@ -24,15 +24,44 @@ const createOrder = async (req, res, next) => {
     }
 }
 
+// const getOrdersByStoreid = async (req, res, next) => {
+//     const { storeid } = req.params
+//     try {
+//         const order = await OrderModel.find({ storeid })
+//         res.status(200).json(order)
+//     } catch (error) {
+//         next(error)
+//     }
+// }
 const getOrdersByStoreid = async (req, res, next) => {
     const { storeid } = req.params
     try {
-        const order = await OrderModel.find({ storeid })
+        const order = await OrderModel.aggregate([
+            {
+                $match:
+                {
+                    storeid
+                },
+
+            },
+            {
+                $lookup:
+                {
+                    from: "users",
+                    localField: "userid",
+                    foreignField: "_id",
+                    as: "userDetails"
+                }
+            },
+            {
+                $unwind: "$userDetails",
+            }
+        ])
+
         res.status(200).json(order)
     } catch (error) {
         next(error)
     }
-
 }
 
 const getOrdersByUserid = async (req, res, next) => {
@@ -61,7 +90,7 @@ const changeOrderStatus = async (req, res, next) => {
     try {
         if (!status) res.status(404).json({ message: "status not found" })
         const { modifiedCount, matchedCount } = await OrderModel.updateOne({ _id: orderid }, { $set: { status: status } })
-        if(modifiedCount, matchedCount) res.status(200).json({message:"status changed successfully"})
+        if (modifiedCount, matchedCount) res.status(200).json({ message: "status changed successfully" })
     } catch (error) {
         next(error)
     }
