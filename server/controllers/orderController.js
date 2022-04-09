@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import CartModel from "../models/cart-models.js";
 import OrderModel from "../models/order-models.js";
 
@@ -24,24 +25,19 @@ const createOrder = async (req, res, next) => {
     }
 }
 
-// const getOrdersByStoreid = async (req, res, next) => {
-//     const { storeid } = req.params
-//     try {
-//         const order = await OrderModel.find({ storeid })
-//         res.status(200).json(order)
-//     } catch (error) {
-//         next(error)
-//     }
-// }
+
 const getOrdersByStoreid = async (req, res, next) => {
     const { storeid } = req.params
+    const {status} = req.query
+    
+    const matchQuery = {storeid}
+    if(status){
+        matchQuery.status = status
+    }
     try {
         const order = await OrderModel.aggregate([
             {
-                $match:
-                {
-                    storeid
-                },
+                $match:matchQuery
 
             },
             {
@@ -64,6 +60,7 @@ const getOrdersByStoreid = async (req, res, next) => {
     }
 }
 
+
 const getOrdersByUserid = async (req, res, next) => {
     const { userid } = req.params
     try {
@@ -73,6 +70,37 @@ const getOrdersByUserid = async (req, res, next) => {
         next(error)
     }
 }
+// const getOrdersByUserid = async (req, res, next) => {
+//     const { userid } = req.params
+//     try {
+//         const order = await OrderModel.aggregate([
+//             {
+//                 $match:
+//                 {
+//                     userid:mongoose.Types.ObjectId(userid)
+//                 },
+
+//             },
+//             {
+//                 $lookup:
+//                 {
+//                     from: "stores",
+//                     localField: "storeid",
+//                     foreignField: "_id",
+//                     as: "storeDetails"
+//                 }
+//             },
+//             {
+//                 $unwind: "$storeDetails",
+//             }
+//         ])
+
+//         res.status(200).json(order)
+//     } catch (error) {
+//         // next(error)
+//         console.log(error);
+//     }
+// }
 
 const getOrderByOrderid = async (req, res, next) => {
     const { orderid } = req.params
