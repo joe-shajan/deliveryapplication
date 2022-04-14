@@ -16,7 +16,7 @@ const createOrder = async (req, res, next) => {
             address,
             status: "pending",
             paymentid,
-            date: new Date()
+            // date: new Date()
         })
         await order.save()
         await CartModel.deleteOne({ userid })
