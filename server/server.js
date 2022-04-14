@@ -10,6 +10,7 @@ import userRouter from './routes/userRoutes.js'
 import cartRouter from './routes/cartRoutes.js'
 import categoryRouter from './routes/categoryRoutes.js'
 import orderRouter from './routes/orderRoutes.js'
+import reportRouter from './routes/reportRoutes.js'
 import errorControllers from "./controllers/errorControllers.js";
 
 connectDB()
@@ -30,6 +31,7 @@ app.use('/user', userRouter)
 app.use('/cart', cartRouter)
 app.use('/category', categoryRouter)
 app.use('/order',orderRouter)
+app.use('/report',reportRouter)
 
 
 app.use(errorControllers)

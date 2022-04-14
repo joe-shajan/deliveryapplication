@@ -19,7 +19,7 @@ const orderSchema = mongoose.Schema({
     address: { type: String, required: true },
     status:{type:String,required:true},
     paymentid:{type:String,required:true},
-    
+    date:{type:Date,required:true}
 })
 
 const OrderModel = mongoose.model('order',orderSchema)

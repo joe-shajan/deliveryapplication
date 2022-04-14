@@ -15,7 +15,8 @@ const createOrder = async (req, res, next) => {
             totalamount,
             address,
             status: "pending",
-            paymentid
+            paymentid,
+            date: new Date()
         })
         await order.save()
         await CartModel.deleteOne({ userid })
@@ -28,16 +29,16 @@ const createOrder = async (req, res, next) => {
 
 const getOrdersByStoreid = async (req, res, next) => {
     const { storeid } = req.params
-    const {status} = req.query
-    
-    const matchQuery = {storeid}
-    if(status){
+    const { status } = req.query
+
+    const matchQuery = { storeid }
+    if (status) {
         matchQuery.status = status
     }
     try {
         const order = await OrderModel.aggregate([
             {
-                $match:matchQuery
+                $match: matchQuery
 
             },
             {
