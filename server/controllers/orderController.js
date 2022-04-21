@@ -5,8 +5,7 @@ import OrderModel from "../models/order-models.js";
 
 const createOrder = async (req, res, next) => {
     const { userid, paymentid, totalamount, address } = req.body
-    console.log(userid, paymentid, totalamount);
-    // let date = new Date()
+    let date = new Date()
     try {
         const { storeid, cartitems } = await CartModel.findOne({ userid })
         const order = new OrderModel({
@@ -17,8 +16,9 @@ const createOrder = async (req, res, next) => {
             address,
             status: "pending",
             paymentid,
-            // date
+            date
         })
+        
         await order.save()
         await CartModel.deleteOne({ userid })
         res.status(200).json({ message: "order created successfully" })
