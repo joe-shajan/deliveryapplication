@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../../actions/cartActions";
+import { addToCart } from "../../Redux/actions/cartActions";
 
 const StoreItem = ({ props }) => {
   const dispatch = useDispatch();

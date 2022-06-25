@@ -16,7 +16,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import CartItem from "../../../components/CartItem/CartItem";
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts, searchProducts } from "../../../actions/productAction";
+import { listProducts, searchProducts } from "../../../Redux/actions/productAction";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import StoreitemSkeleton from "../../../components/StoreitemSkeleton/StoreitemSkeleton";
 

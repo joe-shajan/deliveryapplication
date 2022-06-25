@@ -9,7 +9,7 @@ import {
   CART_INCREMENT_ITEM,
   CART_DECREMENT_ITEM,
 } from '../constants/cartConstants'
-import { Toast } from '../Helpers/alerts'
+import { Toast } from '../../Helpers/alerts'
 
 export const addToCart = (userid, storeid, productid) => async (dispatch, getState) => {
   console.log(userid, storeid, productid)

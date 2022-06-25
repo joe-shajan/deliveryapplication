@@ -17,7 +17,7 @@ import {
   Select,
   Zoom,
 } from "@mui/material";
-import { registerStore } from "../../actions/storeAction";
+import { registerStore } from "../../Redux/actions/storeAction";
 import { useDispatch, useSelector } from "react-redux";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";

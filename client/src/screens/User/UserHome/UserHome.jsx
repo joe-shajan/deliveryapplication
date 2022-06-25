@@ -5,7 +5,7 @@ import Store from "../../../components/Store/Store";
 import UserHeader from "../../../components/UserHeader/UserHeader";
 import Banner from "../../../Images/banner.jpg";
 import { Link } from "react-router-dom";
-import { listStores } from "../../../actions/storeAction";
+import { listStores } from "../../../Redux/actions/storeAction";
 import BackdropLoader from "../../../components/BackdropLoader/BackdropLoader";
 
 const UserHome = () => {

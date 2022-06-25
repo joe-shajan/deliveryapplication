@@ -11,7 +11,7 @@ import Container from "@mui/material/Container";
 import { Backdrop, CircularProgress, Zoom } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
-import { storeLogin } from "../../actions/storeAction";
+import { storeLogin } from "../../Redux/actions/storeAction";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import validationSchema from "../../validations/storeOwnerLoginValidation";

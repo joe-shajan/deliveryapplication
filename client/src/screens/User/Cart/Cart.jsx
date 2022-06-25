@@ -65,9 +65,9 @@ const Cart = () => {
                         Home
                       </Typography>
                       <Typography variant="body2" sx={{ px: 2 }}>
-                        S 1, esther shelters, -, 3 rd floor, Raika Rd,
-                        Narayanapura, Bengaluru, Karnataka 560077, India joe
-                        shajan - 9074955635
+                        address address address address address address address
+                        address address address address address address address
+                        address address address address address address
                       </Typography>
                     </Box>
                     <Box
@@ -83,9 +83,9 @@ const Cart = () => {
                         Home
                       </Typography>
                       <Typography variant="body2" sx={{ px: 2 }}>
-                        S 1, esther shelters, -, 3 rd floor, Raika Rd,
-                        Narayanapura, Bengaluru, Karnataka 560077, India joe
-                        shajan - 9074955635
+                        address address address address address address address
+                        address address address address address address address
+                        address address address address address address
                       </Typography>
                     </Box>
                   </Box>

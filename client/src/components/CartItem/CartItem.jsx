@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from "@mui/material";
 import React, { memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { decrementItemInCart, getAllCartItems, incrementItemInCart, removeFromCart } from "../../actions/cartActions";
+import { decrementItemInCart, getAllCartItems, incrementItemInCart, removeFromCart } from "../../Redux/actions/cartActions";
 import CartIncrementDecrementSmall from "../CartIncrementDecrementSmall/CartIncrementDecrementSmall";
 
 const CartItem = () => {
