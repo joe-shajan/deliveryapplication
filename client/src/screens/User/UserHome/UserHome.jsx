@@ -43,7 +43,7 @@ const UserHome = () => {
         {/* store component */}
         <Link to="/all-stores" style={{ textDecoration: "none" }}>
           <Typography variant="h6" align="center" sx={{ pt: 3, pl: 2, pb: 10 }}>
-            View all stores
+            View all storesssss
           </Typography>
         </Link>
       </Container>
