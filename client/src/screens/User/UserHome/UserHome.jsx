@@ -28,7 +28,8 @@ const UserHome = () => {
           style={{ width: "100%", borderRadius: "15px" }}
         />
         <Typography variant="h5" sx={{ pt: 3, pl: 2 }}>
-          Store's near you
+          Store's nearby
+
         </Typography>
         {/* store component */}
         {loading ? (
